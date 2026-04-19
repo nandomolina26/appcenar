@@ -1,0 +1,56 @@
+<h5 class="text-danger mb-4"><i class="bi bi-shop"></i> Comercios</h5>
+
+<div class="table-responsive">
+  <table class="table table-hover align-middle">
+    <thead class="table-light">
+      <tr>
+        <th>Logo</th>
+        <th>Nombre</th>
+        <th>Tipo</th>
+        <th>Teléfono</th>
+        <th>Horario</th>
+        <th>Pedidos</th>
+        <th>Estado</th>
+        <th>Acción</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each commerces}}
+        <tr>
+          <td>
+            {{#if this.logo}}
+              <img src="/uploads/profiles/{{this.logo}}"
+                class="rounded" width="40" height="40" style="object-fit:cover">
+            {{else}}
+              <div class="bg-secondary rounded d-flex align-items-center justify-content-center"
+                style="width:40px;height:40px">
+                <i class="bi bi-shop text-white"></i>
+              </div>
+            {{/if}}
+          </td>
+          <td class="fw-semibold">{{this.nombre}}</td>
+          <td>{{this.tipo.nombre}}</td>
+          <td>{{this.telefono}}</td>
+          <td class="small text-muted">{{this.horaApertura}} - {{this.horaCierre}}</td>
+          <td><span class="badge bg-secondary">{{this.orderCount}}</span></td>
+          <td>
+            <span class="badge bg-{{#if this.activo}}success{{else}}danger{{/if}}">
+              {{#if this.activo}}Activo{{else}}Inactivo{{/if}}
+            </span>
+          </td>
+          <td>
+            <form action="/admin/commerces/{{this._id}}/toggle" method="POST">
+              <button type="submit" class="btn btn-sm {{#if this.activo}}btn-outline-danger{{else}}btn-outline-success{{/if}}">
+                {{#if this.activo}}Inactivar{{else}}Activar{{/if}}
+              </button>
+            </form>
+          </td>
+        </tr>
+      {{else}}
+        <tr>
+          <td colspan="8" class="text-center text-muted py-4">No hay comercios registrados.</td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>

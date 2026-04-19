@@ -1,0 +1,53 @@
+<div class="d-flex align-items-center mb-3 gap-2">
+  <a href="/client/home" class="btn btn-outline-secondary btn-sm">
+    <i class="bi bi-arrow-left"></i> Volver
+  </a>
+  <h5 class="mb-0 text-danger">{{type.nombre}}</h5>
+</div>
+
+<form action="/client/commerces/{{type._id}}" method="GET" class="mb-3">
+  <div class="input-group">
+    <input type="text" name="search" class="form-control"
+      placeholder="Buscar comercio..." value="{{search}}">
+    <button class="btn btn-danger" type="submit">
+      <i class="bi bi-search"></i>
+    </button>
+  </div>
+</form>
+
+<p class="text-muted small mb-3">
+  <i class="bi bi-shop"></i> {{total}} comercio(s) encontrado(s)
+</p>
+
+<div class="list-group">
+  {{#each commerces}}
+    <div class="list-group-item list-group-item-action d-flex align-items-center gap-3 py-3">
+      <a href="/client/catalog/{{this._id}}" class="d-flex align-items-center gap-3 flex-grow-1 text-decoration-none text-dark">
+        {{#if this.logo}}
+          <img src="/uploads/profiles/{{this.logo}}"
+            class="rounded" width="56" height="56" style="object-fit:cover">
+        {{else}}
+          <div class="bg-secondary rounded d-flex align-items-center justify-content-center"
+            style="width:56px;height:56px">
+            <i class="bi bi-shop text-white fs-4"></i>
+          </div>
+        {{/if}}
+        <div>
+          <p class="mb-0 fw-semibold">{{this.nombre}}</p>
+          <small class="text-muted">
+            <i class="bi bi-clock"></i> {{this.horaApertura}} - {{this.horaCierre}}
+          </small>
+        </div>
+      </a>
+      <form action="/client/favorites/{{this._id}}" method="POST">
+        <button type="submit" class="btn btn-sm {{#if this.isFavorite}}btn-danger{{else}}btn-outline-danger{{/if}}">
+          <i class="bi bi-heart{{#if this.isFavorite}}-fill{{/if}}"></i>
+        </button>
+      </form>
+    </div>
+  {{else}}
+    <div class="list-group-item text-muted text-center py-4">
+      No se encontraron comercios.
+    </div>
+  {{/each}}
+</div>

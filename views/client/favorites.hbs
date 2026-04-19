@@ -1,0 +1,31 @@
+<h5 class="text-danger mb-1"><i class="bi bi-heart-fill"></i> Mis favoritos</h5>
+<p class="text-muted small mb-4">Pide a donde más te gusta</p>
+
+<div class="list-group">
+  {{#each favorites}}
+    <div class="list-group-item py-3 d-flex align-items-center gap-3">
+      <a href="/client/catalog/{{this.comercio._id}}" class="d-flex align-items-center gap-3 flex-grow-1 text-decoration-none text-dark">
+        {{#if this.comercio.logo}}
+          <img src="/uploads/profiles/{{this.comercio.logo}}"
+            class="rounded" width="50" height="50" style="object-fit:cover">
+        {{else}}
+          <div class="bg-secondary rounded d-flex align-items-center justify-content-center"
+            style="width:50px;height:50px">
+            <i class="bi bi-shop text-white fs-5"></i>
+          </div>
+        {{/if}}
+        <span class="fw-semibold">{{this.comercio.nombre}}</span>
+      </a>
+      <form action="/client/favorites/{{this.comercio._id}}" method="POST">
+        <button type="submit" class="btn btn-sm btn-danger">
+          <i class="bi bi-heart-fill"></i> Remover
+        </button>
+      </form>
+    </div>
+  {{else}}
+    <div class="list-group-item text-center text-muted py-5">
+      <i class="bi bi-heart fs-1"></i>
+      <p class="mt-2">No tienes comercios favoritos aún.</p>
+    </div>
+  {{/each}}
+</div>

@@ -1,0 +1,102 @@
+<div class="d-flex align-items-center gap-2 mb-4">
+  <a href="javascript:history.back()" class="btn btn-outline-secondary btn-sm">
+    <i class="bi bi-arrow-left"></i> Volver
+  </a>
+  <h5 class="mb-0 text-danger">Confirmar pedido</h5>
+</div>
+
+<div class="row">
+  <div class="col-md-7">
+    <h6 class="fw-bold mb-3">Selecciona una dirección de entrega</h6>
+    {{#if addresses.length}}
+      <form action="/client/checkout" method="POST" id="checkout-form">
+        <input type="hidden" name="comercioId" value="{{commerce._id}}">
+        <input type="hidden" name="productos" id="productos-input">
+
+        {{#each addresses}}
+          <div class="form-check border rounded p-3 mb-2">
+            <input class="form-check-input" type="radio"
+              name="direccion" value="{{this._id}}" id="addr-{{this._id}}"
+              onchange="enableOrder()">
+            <label class="form-check-label w-100" for="addr-{{this._id}}">
+              <i class="bi bi-geo-alt-fill text-danger"></i>
+              <strong>{{this.nombre}}</strong>
+              <br>
+              <small class="text-muted">{{this.descripcion}}</small>
+            </label>
+          </div>
+        {{/each}}
+
+        <button type="submit" id="btn-pedir"
+          class="btn btn-danger w-100 mt-3" disabled>
+          <i class="bi bi-bag-check"></i> Pedir
+        </button>
+      </form>
+    {{else}}
+      <div class="alert alert-warning">
+        <i class="bi bi-exclamation-triangle"></i>
+        No tienes direcciones registradas.
+        <a href="/client/addresses" class="alert-link">Agrega una aquí</a>
+      </div>
+    {{/if}}
+  </div>
+
+  <div class="col-md-5">
+    <div class="card border-0 shadow-sm">
+      <div class="card-body">
+        {{#if commerce.logo}}
+          <img src="/uploads/profiles/{{commerce.logo}}"
+            class="rounded mb-2" width="48" height="48" style="object-fit:cover">
+        {{/if}}
+        <h6 class="fw-bold">{{commerce.nombre}}</h6>
+        <hr>
+        <div id="order-summary" class="mb-3">
+          <p class="text-muted text-center small">Cargando productos...</p>
+        </div>
+        <div class="d-flex justify-content-between">
+          <span>Subtotal</span>
+          <span id="show-subtotal">RD$ 0.00</span>
+        </div>
+        <div class="d-flex justify-content-between text-muted">
+          <span>ITBIS ({{itbis}}%)</span>
+          <span id="show-itbis">RD$ 0.00</span>
+        </div>
+        <div class="d-flex justify-content-between fw-bold border-top pt-2 mt-2">
+          <span>Total</span>
+          <span id="show-total">RD$ 0.00</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const itbis = {{itbis}};
+const params = new URLSearchParams(window.location.search);
+const productos = JSON.parse(decodeURIComponent(params.get('productos') || '[]'));
+
+document.getElementById('productos-input').value = JSON.stringify(productos);
+
+let subtotal = 0;
+let html = '';
+
+productos.forEach(p => {
+  subtotal += p.precio;
+  html += `<div class="d-flex justify-content-between small mb-1">
+    <span>${p.nombre}</span>
+    <span>RD$ ${p.precio.toFixed(2)}</span>
+  </div>`;
+});
+
+const itbisAmt = subtotal * itbis / 100;
+const total = subtotal + itbisAmt;
+
+document.getElementById('order-summary').innerHTML = html || '<p class="text-muted small">Sin productos</p>';
+document.getElementById('show-subtotal').textContent = `RD$ ${subtotal.toFixed(2)}`;
+document.getElementById('show-itbis').textContent = `RD$ ${itbisAmt.toFixed(2)}`;
+document.getElementById('show-total').textContent = `RD$ ${total.toFixed(2)}`;
+
+function enableOrder() {
+  document.getElementById('btn-pedir').disabled = false;
+}
+</script>

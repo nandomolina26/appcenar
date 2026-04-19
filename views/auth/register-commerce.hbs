@@ -1,0 +1,56 @@
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <div class="card shadow-sm mt-4">
+      <div class="card-body p-4">
+        <h5 class="mb-4 text-danger"><i class="bi bi-shop"></i> Registrar comercio</h5>
+        <form action="/auth/register-commerce" method="POST" enctype="multipart/form-data">
+          <div class="mb-3">
+            <label class="form-label">Nombre del comercio</label>
+            <input type="text" name="nombre" class="form-control" value="{{body.nombre}}" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Teléfono</label>
+            <input type="text" name="telefono" class="form-control" value="{{body.telefono}}" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Correo</label>
+            <input type="email" name="correo" class="form-control" value="{{body.correo}}" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Logo del comercio</label>
+            <input type="file" name="logo" class="form-control" accept="image/*">
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Hora de apertura</label>
+              <input type="time" name="horaApertura" class="form-control" value="{{body.horaApertura}}" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Hora de cierre</label>
+              <input type="time" name="horaCierre" class="form-control" value="{{body.horaCierre}}" required>
+            </div>
+          </div>
+          <div class="mb-3">
+  <label class="form-label">Tipo de comercio</label>
+  <select name="tipo" class="form-select" required>
+    <option value="">Selecciona un tipo</option>
+    {{#each types}}
+      <option value="{{_id}}">{{nombre}}</option>
+    {{/each}}
+  </select>
+</div>
+          <div class="mb-3">
+            <label class="form-label">Contraseña</label>
+            <input type="password" name="password" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Confirmar contraseña</label>
+            <input type="password" name="confirmarPassword" class="form-control" required>
+          </div>
+          <button type="submit" class="btn btn-danger w-100">Registrar comercio</button>
+          <a href="/auth/login" class="btn btn-link w-100 text-center mt-2">Volver al login</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

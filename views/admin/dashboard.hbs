@@ -1,0 +1,67 @@
+<h5 class="text-danger mb-4"><i class="bi bi-speedometer2"></i> Dashboard</h5>
+
+<div class="row g-3 mb-4">
+  <div class="col-md-3 col-6">
+    <div class="card border-0 shadow-sm text-center p-3">
+      <i class="bi bi-bag-check fs-2 text-danger"></i>
+      <h4 class="fw-bold mt-2">{{totalOrders}}</h4>
+      <p class="text-muted small mb-0">Pedidos totales</p>
+    </div>
+  </div>
+  <div class="col-md-3 col-6">
+    <div class="card border-0 shadow-sm text-center p-3">
+      <i class="bi bi-calendar-check fs-2 text-danger"></i>
+      <h4 class="fw-bold mt-2">{{todayOrders}}</h4>
+      <p class="text-muted small mb-0">Pedidos hoy</p>
+    </div>
+  </div>
+  <div class="col-md-3 col-6">
+    <div class="card border-0 shadow-sm text-center p-3">
+      <i class="bi bi-box-seam fs-2 text-danger"></i>
+      <h4 class="fw-bold mt-2">{{totalProducts}}</h4>
+      <p class="text-muted small mb-0">Productos</p>
+    </div>
+  </div>
+</div>
+
+<div class="row g-3">
+  <div class="col-md-4">
+    <div class="card border-0 shadow-sm p-3">
+      <h6 class="fw-bold mb-3"><i class="bi bi-shop text-danger"></i> Comercios</h6>
+      <div class="d-flex justify-content-between">
+        <span class="text-success">Activos</span>
+        <span class="fw-bold">{{activeCommerces}}</span>
+      </div>
+      <div class="d-flex justify-content-between">
+        <span class="text-danger">Inactivos</span>
+        <span class="fw-bold">{{inactiveCommerces}}</span>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card border-0 shadow-sm p-3">
+      <h6 class="fw-bold mb-3"><i class="bi bi-people text-danger"></i> Clientes</h6>
+      <div class="d-flex justify-content-between">
+        <span class="text-success">Activos</span>
+        <span class="fw-bold">{{activeClients}}</span>
+      </div>
+      <div class="d-flex justify-content-between">
+        <span class="text-danger">Inactivos</span>
+        <span class="fw-bold">{{inactiveClients}}</span>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card border-0 shadow-sm p-3">
+      <h6 class="fw-bold mb-3"><i class="bi bi-bicycle text-danger"></i> Deliveries</h6>
+      <div class="d-flex justify-content-between">
+        <span class="text-success">Activos</span>
+        <span class="fw-bold">{{activeDeliveries}}</span>
+      </div>
+      <div class="d-flex justify-content-between">
+        <span class="text-danger">Inactivos</span>
+        <span class="fw-bold">{{inactiveDeliveries}}</span>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,41 @@
+<div class="row justify-content-center">
+  <div class="col-md-7">
+    <a href="/client/orders" class="btn btn-outline-secondary btn-sm mb-3">
+      <i class="bi bi-arrow-left"></i> Volver
+    </a>
+
+    <div class="text-center mb-4">
+      {{#if order.comercio.logo}}
+        <img src="/uploads/profiles/{{order.comercio.logo}}"
+          class="rounded mb-2" width="56" height="56" style="object-fit:cover">
+      {{/if}}
+      <h5 class="fw-bold">{{order.comercio.nombre}}</h5>
+      <span class="badge bg-{{statusClass order.estado}} fs-6">{{order.estado}}</span>
+      <br>
+      <small class="text-muted">{{formatDate order.createdAt}}</small>
+    </div>
+
+    <h6 class="fw-bold border-bottom pb-2">Tu pedido</h6>
+    {{#each order.productos}}
+      <div class="d-flex align-items-center gap-3 py-2 border-bottom">
+        {{#if this.imagen}}
+          <img src="/uploads/products/{{this.imagen}}"
+            class="rounded" width="50" height="50" style="object-fit:cover">
+        {{else}}
+          <div class="bg-secondary rounded d-flex align-items-center justify-content-center"
+            style="width:50px;height:50px">
+            <i class="bi bi-box text-white"></i>
+          </div>
+        {{/if}}
+        <span class="flex-grow-1">{{this.nombre}}</span>
+        <span class="fw-bold">RD$ {{this.precio}}</span>
+      </div>
+    {{/each}}
+
+    <div class="mt-3 text-end">
+      <p class="mb-1 text-muted">Subtotal: RD$ {{order.subtotal}}</p>
+      <p class="mb-1 text-muted">ITBIS: RD$ {{order.itbis}}</p>
+      <p class="fw-bold fs-5">Total: RD$ {{order.total}}</p>
+    </div>
+  </div>
+</div>

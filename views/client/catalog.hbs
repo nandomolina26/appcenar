@@ -1,0 +1,142 @@
+<div class="row">
+  <div class="col-md-8">
+    <div class="d-flex align-items-center gap-2 mb-4">
+      <a href="/client/home" class="btn btn-outline-secondary btn-sm">
+        <i class="bi bi-arrow-left"></i> Volver
+      </a>
+      {{#if commerce.logo}}
+        <img src="/uploads/profiles/{{commerce.logo}}"
+          class="rounded" width="40" height="40" style="object-fit:cover">
+      {{/if}}
+      <h5 class="mb-0 text-danger">{{commerce.nombre}}</h5>
+    </div>
+
+    {{#each categoriesWithProducts}}
+      <h6 class="fw-bold text-uppercase text-muted mb-3 border-bottom pb-1">{{this.nombre}}</h6>
+      <div class="row g-3 mb-4">
+        {{#each this.products}}
+          <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm">
+              {{#if this.imagen}}
+                <img src="/uploads/products/{{this.imagen}}"
+                  class="card-img-top" style="height:140px;object-fit:cover">
+              {{/if}}
+              <div class="card-body">
+                <h6 class="card-title fw-bold">{{this.nombre}}</h6>
+                <p class="card-text text-muted small">{{this.descripcion}}</p>
+                <div class="d-flex justify-content-between align-items-center mt-2">
+                  <span class="fw-bold text-danger">RD$ {{this.precio}}</span>
+                  <button class="btn btn-sm btn-danger add-to-cart"
+                    data-id="{{this._id}}"
+                    data-nombre="{{this.nombre}}"
+                    data-precio="{{this.precio}}">
+                    <i class="bi bi-plus-circle"></i> Agregar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        {{/each}}
+      </div>
+    {{else}}
+      <p class="text-muted">Este comercio no tiene productos disponibles.</p>
+    {{/each}}
+  </div>
+
+  <div class="col-md-4">
+    <div class="card shadow-sm border-0 sticky-top" style="top:80px">
+      <div class="card-body">
+        <h6 class="fw-bold mb-3"><i class="bi bi-bag"></i> Mi pedido</h6>
+        <div id="cart-items">
+          <p class="text-muted text-center" id="empty-msg">Tu pedido está vacío</p>
+        </div>
+        <hr>
+        <div class="d-flex justify-content-between fw-bold">
+          <span>Subtotal</span>
+          <span id="subtotal">RD$ 0.00</span>
+        </div>
+        <a href="/client/checkout/{{commerce._id}}" id="btn-continuar"
+          class="btn btn-danger w-100 mt-3 d-none">
+          Continuar
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<input type="hidden" id="commerce-id" value="{{commerce._id}}">
+
+<script>
+let cart = {};
+
+document.querySelectorAll('.add-to-cart').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const id = btn.dataset.id;
+    const nombre = btn.dataset.nombre;
+    const precio = parseFloat(btn.dataset.precio);
+
+    if (cart[id]) return;
+
+    cart[id] = { id, nombre, precio };
+    btn.disabled = true;
+    btn.innerHTML = '<i class="bi bi-check-circle"></i> Agregado';
+
+    renderCart();
+  });
+});
+
+function renderCart() {
+  const container = document.getElementById('cart-items');
+  const emptyMsg = document.getElementById('empty-msg');
+  const btnContinuar = document.getElementById('btn-continuar');
+
+  const items = Object.values(cart);
+
+  if (items.length === 0) {
+    emptyMsg.classList.remove('d-none');
+    btnContinuar.classList.add('d-none');
+    container.innerHTML = '<p class="text-muted text-center" id="empty-msg">Tu pedido está vacío</p>';
+    document.getElementById('subtotal').textContent = 'RD$ 0.00';
+    return;
+  }
+
+  emptyMsg && emptyMsg.classList.add('d-none');
+  btnContinuar.classList.remove('d-none');
+
+  let subtotal = 0;
+  let html = '';
+
+  items.forEach(item => {
+    subtotal += item.precio;
+    html += `
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <span class="small">${item.nombre}</span>
+        <div class="d-flex gap-2 align-items-center">
+          <span class="small fw-bold">RD$ ${item.precio.toFixed(2)}</span>
+          <button class="btn btn-sm btn-outline-danger py-0 px-1 remove-item" data-id="${item.id}">
+            <i class="bi bi-x"></i>
+          </button>
+        </div>
+      </div>`;
+  });
+
+  container.innerHTML = html;
+  document.getElementById('subtotal').textContent = `RD$ ${subtotal.toFixed(2)}`;
+
+  document.querySelectorAll('.remove-item').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.id;
+      delete cart[id];
+      const addBtn = document.querySelector(`.add-to-cart[data-id="${id}"]`);
+      if (addBtn) {
+        addBtn.disabled = false;
+        addBtn.innerHTML = '<i class="bi bi-plus-circle"></i> Agregar';
+      }
+      renderCart();
+    });
+  });
+
+  const productsJson = JSON.stringify(items);
+  btnContinuar.href = `/client/checkout/{{commerce._id}}?productos=${encodeURIComponent(productsJson)}`;
+}
+</script>

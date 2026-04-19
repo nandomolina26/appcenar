@@ -1,0 +1,37 @@
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <h5 class="text-danger mb-4"><i class="bi bi-shop"></i> Perfil del comercio</h5>
+    <div class="card shadow-sm border-0">
+      <div class="card-body p-4">
+        <div class="text-center mb-4">
+          {{#if profile.logo}}
+            <img src="/uploads/profiles/{{profile.logo}}"
+              class="rounded mb-2" width="90" height="90" style="object-fit:cover">
+          {{else}}
+            <div class="bg-secondary rounded d-flex align-items-center justify-content-center mx-auto mb-2"
+              style="width:90px;height:90px">
+              <i class="bi bi-shop text-white" style="font-size:2.5rem"></i>
+            </div>
+          {{/if}}
+        </div>
+        <form action="/commerce/profile" method="POST" enctype="multipart/form-data">
+          <div class="mb-3">
+            <label class="form-label">Logo</label>
+            <input type="file" name="logo" class="form-control" accept="image/*">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Teléfono</label>
+            <input type="text" name="telefono" class="form-control" value="{{profile.telefono}}" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Correo</label>
+            <input type="email" name="correo" class="form-control" value="{{profile.correo}}" required>
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Hora de apertura</label>
+              <input type="time" name="horaApertura" class="form-control" value="{{profile.horaApertura}}" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Hora de cierre</label>
+              <input type="time" name="horaCierre" class="form-contro

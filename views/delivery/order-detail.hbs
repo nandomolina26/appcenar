@@ -1,0 +1,54 @@
+<div class="row justify-content-center">
+  <div class="col-md-7">
+    <a href="/delivery/home" class="btn btn-outline-secondary btn-sm mb-3">
+      <i class="bi bi-arrow-left"></i> Volver
+    </a>
+
+    <div class="text-center mb-4">
+      {{#if order.comercio.logo}}
+        <img src="/uploads/profiles/{{order.comercio.logo}}"
+          class="rounded mb-2" width="56" height="56" style="object-fit:cover">
+      {{/if}}
+      <h5 class="fw-bold text-uppercase">{{order.comercio.nombre}}</h5>
+      <span class="badge bg-{{statusClass order.estado}} fs-6">{{order.estado}}</span>
+      <br>
+      <small class="text-muted">{{formatDate order.createdAt}}</small>
+    </div>
+
+    {{#if (eq order.estado "en proceso")}}
+      <form action="/delivery/orders/{{order._id}}/complete" method="POST" class="mb-4">
+        <button type="submit" class="btn btn-danger w-100">
+          <i class="bi bi-check-circle"></i> Completar el pedido
+        </button>
+      </form>
+    {{/if}}
+
+    <h6 class="fw-bold border-bottom pb-2">El pedido</h6>
+    {{#each order.productos}}
+      <div class="d-flex align-items-center gap-3 py-2 border-bottom">
+        {{#if this.imagen}}
+          <img src="/uploads/products/{{this.imagen}}"
+            class="rounded" width="50" height="50" style="object-fit:cover">
+        {{else}}
+          <div class="bg-secondary rounded d-flex align-items-center justify-content-center"
+            style="width:50px;height:50px">
+            <i class="bi bi-box text-white"></i>
+          </div>
+        {{/if}}
+        <span class="flex-grow-1">{{this.nombre}}</span>
+        <span class="fw-bold">RD$ {{this.precio}}</span>
+      </div>
+    {{/each}}
+
+    {{#if (eq order.estado "en proceso")}}
+      <div class="mt-3 p-3 bg-light rounded">
+        <p class="mb-1 fw-bold"><i class="bi bi-geo-alt-fill text-danger"></i> Dirección de entrega</p>
+        <p class="mb-0 text-muted">{{order.direccionTexto}}</p>
+      </div>
+    {{/if}}
+
+    <div class="mt-3 text-end">
+      <p class="fw-bold fs-5">Total: RD$ {{order.total}}</p>
+    </div>
+  </div>
+</div>

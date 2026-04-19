@@ -1,0 +1,144 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h5 class="text-danger mb-0"><i class="bi bi-shield-person"></i> Administradores</h5>
+  <a href="/admin/admins/create" class="btn btn-danger btn-sm">
+    <i class="bi bi-plus-circle"></i> Nuevo admin
+  </a>
+</div>
+
+{{#if showCreate}}
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <h6 class="fw-bold mb-3">Nuevo administrador</h6>
+      <form action="/admin/admins/create" method="POST">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Nombre</label>
+            <input type="text" name="nombre" class="form-control" value="{{body.nombre}}" required>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Apellido</label>
+            <input type="text" name="apellido" class="form-control" value="{{body.apellido}}" required>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Cédula</label>
+          <input type="text" name="cedula" class="form-control" value="{{body.cedula}}" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Correo</label>
+          <input type="email" name="correo" class="form-control" value="{{body.correo}}" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Usuario</label>
+          <input type="text" name="usuario" class="form-control" value="{{body.usuario}}" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Contraseña</label>
+          <input type="password" name="password" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Confirmar contraseña</label>
+          <input type="password" name="confirmarPassword" class="form-control" required>
+        </div>
+        <div class="d-flex gap-2">
+          <button type="submit" class="btn btn-danger">Crear</button>
+          <a href="/admin/admins" class="btn btn-outline-secondary">Cancelar</a>
+        </div>
+      </form>
+    </div>
+  </div>
+{{/if}}
+
+{{#if editAdmin}}
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <h6 class="fw-bold mb-3">Editar administrador</h6>
+      <form action="/admin/admins/edit/{{editAdmin._id}}" method="POST">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Nombre</label>
+            <input type="text" name="nombre" class="form-control" value="{{editAdmin.nombre}}" required>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Apellido</label>
+            <input type="text" name="apellido" class="form-control" value="{{editAdmin.apellido}}" required>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Cédula</label>
+          <input type="text" name="cedula" class="form-control" value="{{editAdmin.cedula}}" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Correo</label>
+          <input type="email" name="correo" class="form-control" value="{{editAdmin.correo}}" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Usuario</label>
+          <input type="text" name="usuario" class="form-control" value="{{editAdmin.usuario}}" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Nueva contraseña <small class="text-muted">(dejar vacío para no cambiar)</small></label>
+          <input type="password" name="password" class="form-control">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Confirmar contraseña</label>
+          <input type="password" name="confirmarPassword" class="form-control">
+        </div>
+        <div class="d-flex gap-2">
+          <button type="submit" class="btn btn-danger">Actualizar</button>
+          <a href="/admin/admins" class="btn btn-outline-secondary">Cancelar</a>
+        </div>
+      </form>
+    </div>
+  </div>
+{{/if}}
+
+<div class="table-responsive">
+  <table class="table table-hover align-middle">
+    <thead class="table-light">
+      <tr>
+        <th>Nombre</th>
+        <th>Usuario</th>
+        <th>Cédula</th>
+        <th>Correo</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each admins}}
+        <tr>
+          <td>{{this.nombre}} {{this.apellido}}</td>
+          <td class="text-muted">{{this.usuario}}</td>
+          <td>{{this.cedula}}</td>
+          <td>{{this.correo}}</td>
+          <td>
+            <span class="badge bg-{{#if this.activo}}success{{else}}danger{{/if}}">
+              {{#if this.activo}}Activo{{else}}Inactivo{{/if}}
+            </span>
+          </td>
+          <td>
+            {{#if (neq this._id ../currentUser)}}
+              <div class="d-flex gap-2">
+                <a href="/admin/admins/edit/{{this._id}}" class="btn btn-sm btn-outline-primary">
+                  <i class="bi bi-pencil"></i>
+                </a>
+                <form action="/admin/admins/{{this._id}}/toggle" method="POST">
+                  <button type="submit" class="btn btn-sm {{#if this.activo}}btn-outline-danger{{else}}btn-outline-success{{/if}}">
+                    {{#if this.activo}}Inactivar{{else}}Activar{{/if}}
+                  </button>
+                </form>
+              </div>
+            {{else}}
+              <span class="text-muted small">Tu cuenta</span>
+            {{/if}}
+          </td>
+        </tr>
+      {{else}}
+        <tr>
+          <td colspan="6" class="text-center text-muted py-4">No hay administradores.</td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>

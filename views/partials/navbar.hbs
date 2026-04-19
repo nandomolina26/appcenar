@@ -1,0 +1,62 @@
+{{#if user}}
+<nav class="navbar navbar-expand-lg navbar-dark bg-danger">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="#">
+      <i class="bi bi-bag-heart-fill"></i> AppCenar
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav me-auto">
+
+        {{#if (eq user.role "cliente")}}
+          <li class="nav-item"><a class="nav-link" href="/client/home"><i class="bi bi-house"></i> Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="/client/profile"><i class="bi bi-person"></i> Mi perfil</a></li>
+          <li class="nav-item"><a class="nav-link" href="/client/orders"><i class="bi bi-bag"></i> Mis pedidos</a></li>
+          <li class="nav-item"><a class="nav-link" href="/client/addresses"><i class="bi bi-geo-alt"></i> Mis direcciones</a></li>
+          <li class="nav-item"><a class="nav-link" href="/client/favorites"><i class="bi bi-heart"></i> Mis favoritos</a></li>
+        {{/if}}
+
+        {{#if (eq user.role "delivery")}}
+          <li class="nav-item"><a class="nav-link" href="/delivery/home"><i class="bi bi-house"></i> Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="/delivery/profile"><i class="bi bi-person"></i> Mi perfil</a></li>
+        {{/if}}
+
+        {{#if (eq user.role "comercio")}}
+          <li class="nav-item"><a class="nav-link" href="/commerce/home"><i class="bi bi-house"></i> Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="/commerce/profile"><i class="bi bi-person"></i> Mi perfil</a></li>
+          <li class="nav-item"><a class="nav-link" href="/commerce/categories"><i class="bi bi-tags"></i> Categorías</a></li>
+          <li class="nav-item"><a class="nav-link" href="/commerce/products"><i class="bi bi-box"></i> Productos</a></li>
+        {{/if}}
+
+        {{#if (eq user.role "administrador")}}
+          <li class="nav-item"><a class="nav-link" href="/admin/home"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link" href="/admin/clients"><i class="bi bi-people"></i> Clientes</a></li>
+          <li class="nav-item"><a class="nav-link" href="/admin/deliveries"><i class="bi bi-bicycle"></i> Deliveries</a></li>
+          <li class="nav-item"><a class="nav-link" href="/admin/commerces"><i class="bi bi-shop"></i> Comercios</a></li>
+          <li class="nav-item"><a class="nav-link" href="/admin/commerce-types"><i class="bi bi-grid"></i> Tipos</a></li>
+          <li class="nav-item"><a class="nav-link" href="/admin/admins"><i class="bi bi-shield-person"></i> Admins</a></li>
+          <li class="nav-item"><a class="nav-link" href="/admin/config"><i class="bi bi-gear"></i> Config</a></li>
+        {{/if}}
+
+      </ul>
+      <ul class="navbar-nav ms-auto align-items-center">
+        <li class="nav-item">
+          <span class="nav-link text-white">
+            {{#if user.foto}}
+              <img src="/uploads/profiles/{{user.foto}}" class="rounded-circle me-1" width="28" height="28" style="object-fit:cover">
+            {{else}}
+              <i class="bi bi-person-circle"></i>
+            {{/if}}
+            {{user.nombre}}
+          </span>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/auth/logout"><i class="bi bi-box-arrow-right"></i> Salir</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+{{/if}}

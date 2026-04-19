@@ -1,0 +1,108 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h5 class="text-danger mb-0"><i class="bi bi-grid"></i> Tipos de comercio</h5>
+  <a href="/admin/commerce-types/create" class="btn btn-danger btn-sm">
+    <i class="bi bi-plus-circle"></i> Nuevo tipo
+  </a>
+</div>
+
+{{#if showCreate}}
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <h6 class="fw-bold mb-3">Nuevo tipo de comercio</h6>
+      <form action="/admin/commerce-types/create" method="POST" enctype="multipart/form-data">
+        <div class="mb-3">
+          <label class="form-label">Nombre</label>
+          <input type="text" name="nombre" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Descripción</label>
+          <input type="text" name="descripcion" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Ícono</label>
+          <input type="file" name="icono" class="form-control" accept="image/*" required>
+        </div>
+        <div class="d-flex gap-2">
+          <button type="submit" class="btn btn-danger">Crear</button>
+          <a href="/admin/commerce-types" class="btn btn-outline-secondary">Cancelar</a>
+        </div>
+      </form>
+    </div>
+  </div>
+{{/if}}
+
+{{#if editType}}
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <h6 class="fw-bold mb-3">Editar tipo de comercio</h6>
+      <form action="/admin/commerce-types/edit/{{editType._id}}" method="POST" enctype="multipart/form-data">
+        <div class="mb-3">
+          <label class="form-label">Nombre</label>
+          <input type="text" name="nombre" class="form-control" value="{{editType.nombre}}" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Descripción</label>
+          <input type="text" name="descripcion" class="form-control" value="{{editType.descripcion}}" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Ícono actual</label>
+          {{#if editType.icono}}
+            <div class="mb-2">
+              <img src="/uploads/commerce-types/{{editType.icono}}"
+                class="rounded" width="60" height="60" style="object-fit:cover">
+            </div>
+          {{/if}}
+          <input type="file" name="icono" class="form-control" accept="image/*">
+        </div>
+        <div class="d-flex gap-2">
+          <button type="submit" class="btn btn-danger">Actualizar</button>
+          <a href="/admin/commerce-types" class="btn btn-outline-secondary">Cancelar</a>
+        </div>
+      </form>
+    </div>
+  </div>
+{{/if}}
+
+{{#if deleteType}}
+  <div class="card border-danger shadow-sm mb-4">
+    <div class="card-body text-center">
+      <p class="fw-bold">¿Está seguro que desea eliminar este tipo de comercio y todos los comercios asociados?</p>
+      <p class="text-muted">{{deleteType.nombre}}</p>
+      <div class="d-flex justify-content-center gap-3">
+        <form action="/admin/commerce-types/delete/{{deleteType._id}}" method="POST">
+          <button type="submit" class="btn btn-danger">Aceptar</button>
+        </form>
+        <a href="/admin/commerce-types" class="btn btn-outline-secondary">Cancelar</a>
+      </div>
+    </div>
+  </div>
+{{/if}}
+
+<div class="row g-3">
+  {{#each types}}
+    <div class="col-md-4 col-lg-3">
+      <div class="card h-100 shadow-sm border-0 text-center p-3">
+        {{#if this.icono}}
+          <img src="/uploads/commerce-types/{{this.icono}}"
+            class="mx-auto mb-2 rounded" width="64" height="64" style="object-fit:cover">
+        {{/if}}
+        <h6 class="fw-bold">{{this.nombre}}</h6>
+        <p class="text-muted small">{{this.descripcion}}</p>
+        <span class="badge bg-secondary mb-3">{{this.commerceCount}} comercio(s)</span>
+        <div class="d-flex gap-2 justify-content-center">
+          <a href="/admin/commerce-types/edit/{{this._id}}" class="btn btn-sm btn-outline-primary">
+            <i class="bi bi-pencil"></i>
+          </a>
+          <a href="/admin/commerce-types/delete/{{this._id}}" class="btn btn-sm btn-outline-danger">
+            <i class="bi bi-trash"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  {{else}}
+    <div class="col text-center text-muted py-5">
+      <i class="bi bi-grid fs-1"></i>
+      <p class="mt-2">No hay tipos de comercio creados.</p>
+    </div>
+  {{/each}}
+</div>

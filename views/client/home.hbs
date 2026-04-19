@@ -1,0 +1,31 @@
+<div class="row mb-4">
+  <div class="col">
+    <h4 class="text-danger"><i class="bi bi-bag-heart-fill"></i> Hola, {{user.nombre}}</h4>
+    <p class="text-muted">¿Qué vas a pedir hoy?</p>
+  </div>
+</div>
+
+<div class="row g-3">
+  {{#each types}}
+    <div class="col-6 col-md-4 col-lg-3">
+      <a href="/client/commerces/{{this._id}}" class="text-decoration-none">
+        <div class="card h-100 text-center shadow-sm border-0 p-3 hover-card">
+          {{#if this.icono}}
+            <img src="/uploads/commerce-types/{{this.icono}}"
+              class="mx-auto mb-2 rounded" width="64" height="64" style="object-fit:cover">
+          {{else}}
+            <div class="mx-auto mb-2 bg-danger rounded d-flex align-items-center justify-content-center"
+              style="width:64px;height:64px">
+              <i class="bi bi-shop text-white fs-3"></i>
+            </div>
+          {{/if}}
+          <p class="mb-0 fw-semibold text-dark">{{this.nombre}}</p>
+        </div>
+      </a>
+    </div>
+  {{else}}
+    <div class="col">
+      <p class="text-muted">No hay tipos de comercio disponibles.</p>
+    </div>
+  {{/each}}
+</div>

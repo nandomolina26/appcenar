@@ -1,0 +1,6 @@
+node_modules/
+.env.development
+.env.qa
+public/uploads/profiles/*
+public/uploads/products/*
+public/uploads/commerce-types/*

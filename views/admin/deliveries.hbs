@@ -1,0 +1,42 @@
+<h5 class="text-danger mb-4"><i class="bi bi-bicycle"></i> Deliveries</h5>
+
+<div class="table-responsive">
+  <table class="table table-hover align-middle">
+    <thead class="table-light">
+      <tr>
+        <th>Nombre</th>
+        <th>Teléfono</th>
+        <th>Correo</th>
+        <th>Entregas</th>
+        <th>Estado</th>
+        <th>Acción</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each deliveries}}
+        <tr>
+          <td>{{this.nombre}} {{this.apellido}}</td>
+          <td>{{this.telefono}}</td>
+          <td>{{this.correo}}</td>
+          <td><span class="badge bg-secondary">{{this.orderCount}}</span></td>
+          <td>
+            <span class="badge bg-{{#if this.activo}}success{{else}}danger{{/if}}">
+              {{#if this.activo}}Activo{{else}}Inactivo{{/if}}
+            </span>
+          </td>
+          <td>
+            <form action="/admin/deliveries/{{this._id}}/toggle" method="POST">
+              <button type="submit" class="btn btn-sm {{#if this.activo}}btn-outline-danger{{else}}btn-outline-success{{/if}}">
+                {{#if this.activo}}Inactivar{{else}}Activar{{/if}}
+              </button>
+            </form>
+          </td>
+        </tr>
+      {{else}}
+        <tr>
+          <td colspan="6" class="text-center text-muted py-4">No hay deliveries registrados.</td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
