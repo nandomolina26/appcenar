@@ -4,3 +4,6 @@ node_modules/
 public/uploads/profiles/*
 public/uploads/products/*
 public/uploads/commerce-types/*
+seed.js
+fix.js
+reset.js
