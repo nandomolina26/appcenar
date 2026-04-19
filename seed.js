@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
-require('dotenv').config({ path: '.env.development' });
 
-mongoose.connect(process.env.MONGO_URI).then(async () => {
+mongoose.connect('mongodb://mongo:eWjNfkpVQcJVkNZWQTlbYldMSGaXZMYG@roundhouse.proxy.rlwy.net:46832').then(async () => {
   const User = require('./models/User');
 
   const existe = await User.findOne({ usuario: 'admin' });

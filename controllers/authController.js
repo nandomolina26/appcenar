@@ -93,11 +93,15 @@ const postRegister = async (req, res) => {
       password: hash,
       role,
       foto: req.file ? req.file.filename : null,
-      activationToken: token
+      activationToken: token,
+      activo: false
     });
 
     await newUser.save();
-    await sendActivationEmail(correo, token);
+
+    sendActivationEmail(correo, token).catch(err =>
+      console.error('Error enviando correo activacion:', err.message)
+    );
 
     res.render('auth/login', {
       success: 'Cuenta creada. Revisa tu correo para activarla.'
@@ -114,14 +118,13 @@ const getRegisterCommerce = async (req, res) => {
     const types = await CommerceType.find().lean();
     res.render('auth/register-commerce', { types });
   } catch (error) {
-    console.error(error);
-    res.render('auth/register-commerce', { types: [], error: 'Error cargando tipos.' });
+    res.render('auth/register-commerce', { types: [] });
   }
 };
 
 const postRegisterCommerce = async (req, res) => {
   const errors = validationResult(req);
-  const types = await CommerceType.find();
+  const types = await CommerceType.find().lean();
 
   if (!errors.isEmpty()) {
     return res.render('auth/register-commerce', {
@@ -146,11 +149,15 @@ const postRegisterCommerce = async (req, res) => {
       nombre, telefono, correo, horaApertura, horaCierre, tipo,
       password: hash,
       logo: req.file ? req.file.filename : null,
-      activationToken: token
+      activationToken: token,
+      activo: false
     });
 
     await newCommerce.save();
-    await sendActivationEmail(correo, token);
+
+    sendActivationEmail(correo, token).catch(err =>
+      console.error('Error enviando correo comercio:', err.message)
+    );
 
     res.render('auth/login', {
       success: 'Comercio registrado. Revisa tu correo para activarlo.'
@@ -214,7 +221,9 @@ const postForgotPassword = async (req, res) => {
     user.resetTokenExpiry = Date.now() + 3600000;
     await user.save();
 
-    await sendResetPasswordEmail(user.correo, token);
+    sendResetPasswordEmail(user.correo, token).catch(err =>
+      console.error('Error enviando correo reset:', err.message)
+    );
 
     res.render('auth/forgot-password', {
       success: 'Te enviamos un correo con las instrucciones.'
